@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import moment from "moment";
+import DatePicker from 'react-native-datepicker'
+
+function getDayOfWeek(date) {
+  var dayOfWeek = new Date(date).getDay();    
+  return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek+1];
+}
 
 export default class clockApp extends Component {
   constructor(props){
     super(props);
     this.state = {
       time: moment().format("LTS"),
-      text: ''
+      date: "1999-12-31"
     };
   }
+
   componentDidMount() {
     setTimeout(() => {
 			this.setState({
@@ -21,16 +28,33 @@ export default class clockApp extends Component {
   render() {
     return (
       <View style = {styles.container}>
-        <TextInput 
-          style={styles.input}
-          placeholder = "Please Enter A Date"
-          onChangeText={(text) => this.setState({text})}
+        <DatePicker 
+          style={styles.dateInput}
+          mode = "date"
+          placeholder = "Select Date"
+          format = "YYYY-MM-DD"
+          minDate = "1900-01-01"
+          maxDate = "2100-12-31"
+          confirmBtnText="Confirm"
+          cancelBtnText="Cancel"
+          customStyles={{
+            dateIcon: {
+              position: 'absolute',
+              left: 0,
+              top: 4,
+              marginLeft: 0
+            },
+            dateInput: {
+              marginLeft: 36
+            }
+          }}
+          onDateChange = {(date) => {this.setState({date: date})}}
         />
         <Text style={styles.timeOutput}>
 					{this.state.time}
 				</Text>
         <Text style={styles.dateOutput}>
-          {this.state.text}
+          {getDayOfWeek(this.state.date)+" "+this.state.date}
         </Text>
       </View>
     );
@@ -38,13 +62,12 @@ export default class clockApp extends Component {
 }
 
  const styles = StyleSheet.create({
-   input:{
-     color: 'steelblue',
-     height: 40,
-     fontSize: 40,
+   dateInput:{
+     width: 200,
    },
+
    dateOutput:{
-     fontSize: 40,
+     fontSize: 30,
      color: 'steelblue',
    },
 
@@ -55,11 +78,11 @@ export default class clockApp extends Component {
    },
 
    container:{
-     //backgroundColor: 'black',
+     backgroundColor: 'black',
      padding: 10,
      flex: 1,
      flexDirection: 'column',
-     justifyContent: 'space-between',
+     justifyContent: 'space-around',
      alignItems: 'center',
    }
  })
