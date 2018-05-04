@@ -8,9 +8,11 @@
   },
   "dependencies": {
     "moment": "^2.22.1",
-    "react": "16.3.1",
+    "npm": "^6.0.0",
+    "react": "^16.3.1",
     "react-native": "0.55.3",
     "react-native-datepicker": "^1.7.2",
+    "redux": "^4.0.0",
     "save": "^2.3.2"
   },
   "devDependencies": {

@@ -7,14 +7,13 @@ function getDayOfWeek(date) {
   var dayOfWeek = new Date(date).getDay();    
   return isNaN(dayOfWeek) ? null : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek+1];
 }
-
+ 
 
 class Clock extends Component{
   constructor(props){
     super(props);
     this.state = {
       time: moment().format("LTS"),
-      date: "1999-12-31"
     };
   }
 
@@ -39,13 +38,19 @@ class CalenderPrompt extends Component{
   constructor(props){
     super(props);
     this.state = {
-      date: "1999-12-31"
+      date:"1999-12-31",
     };
   }
-  
+
+
 
   render(){
     return(
+      <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        }}>
       <DatePicker 
             style={styles.dateInput}
             date = {this.state.date}
@@ -69,23 +74,10 @@ class CalenderPrompt extends Component{
             }}
             onDateChange = {(date) => {this.setState({date: date})}}
           />
-    )
-  }
-}
-
-class DateOutput extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      dates: ""
-    }
-  }
-
-  render(){
-    return(
-      <Text style={styles.dateOutput}>
-          {getDayOfWeek(4)+" "+6}
-      </Text>
+          <Text style={styles.dateOutput}>
+            {getDayOfWeek(this.state.date)+" "+this.state.date}
+          </Text>
+      </View>
     )
   }
 }
@@ -97,7 +89,6 @@ export default class clockFace extends Component {
       <View style = {styles.container}>
         <CalenderPrompt/>
         <Clock/>
-        <DateOutput/>
       </View>
     );
   }
