@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View, StyleSheet } from 'react-native';
 import DatePicker from 'react-native-datepicker'
+import {time_update, date_update} from "./actions"
+import {connect} from 'react-redux'
 
 function getDayOfWeek(date) {
     var dayOfWeek = new Date(date).getDay();    
@@ -10,14 +12,11 @@ function getDayOfWeek(date) {
 class Clock extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      date: this.props.date,
-    };
 }
 
     render() {
       return (
-        <View styke={{justifyContent: 'space-around'}}>
+        <View style={{justifyContent: 'space-around'}}>
         <View style={{
         flex: 1,
         flexDirection: 'column',
@@ -25,7 +24,7 @@ class Clock extends Component {
         }}>
       <DatePicker 
             style={styles.dateInput}
-            date = {this.state.date}
+            date = {this.props.date}
             mode = "date"
             placeholder = "Select Date"
             format = "YYYY-MM-DD"
@@ -44,11 +43,11 @@ class Clock extends Component {
                 marginLeft: 36
               }
             }}
-            onDateChange = {(date) => {this.setState({date: date})}}
+            onDateChange = {(date) => this.props.date_update(date)}
           />
           </View>
       <Text style={styles.dateOutput}>
-            {getDayOfWeek(this.state.date)+" "+this.state.date}
+            {getDayOfWeek(this.props.date)+" "+this.props.date}
       </Text>
       <Text style={styles.dateOutput}>
           {this.props.time}
@@ -57,8 +56,18 @@ class Clock extends Component {
       );
     }
   }
-  
-  export default Clock;
+
+
+  const mapDispatchToProps = (dispatch) => {
+    return {
+        date_update: (date) => dispatch(date_update(date))
+    }
+  }
+
+
+  export default connect(
+    () => {return {}}, mapDispatchToProps
+)(Clock);
 
    const styles = StyleSheet.create({
     dateInput:{
@@ -75,5 +84,7 @@ class Clock extends Component {
        color: 'steelblue',
      },
    })
+
+
   
    

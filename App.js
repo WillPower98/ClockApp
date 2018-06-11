@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import ClockFace from './ClockFace';
 import { View, StyleSheet } from 'react-native';
+import { Provider } from 'react-redux'
+import {createStore} from 'redux';
+import clockAppReducer from './reducers';
 
+const store = createStore(clockAppReducer)
 
 export default class app extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <ClockFace/>
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          <ClockFace/>
+        </View>
+      </Provider>
     );
   }
 }
